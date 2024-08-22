@@ -59,15 +59,20 @@ $ sudo systemctl status docker
 ```
 ![](../assets/images/ubuntu_docker_status.png)
 
-- Step 7 : Test 
-```
-sudo docker run hello-world
-```
 
-- Step 8 : Create Docker group
+- Step 7 : Create Docker group
 To avoid having to use sudo each time we run Docker, it is recommended to add your user to the Docker group. To create the Docker group, run the following command:
 ```
 $ sudo groupadd docker
+groupadd: group 'docker' already exists
+
 $ sudo usermod -aG docker $USER
+$ newgrp docker
 ```
 
+- Step 8 : Test 
+```
+$ docker run hello-world
+```
+
+![](../assets/images/ubuntu_docker_hello_world.png)
