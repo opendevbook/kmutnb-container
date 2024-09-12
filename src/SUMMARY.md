@@ -20,3 +20,8 @@
 - [Postgresql Container](./module1/postgresql.md)
 - [NextCloud Container](./module1/nextcloud.md)
 - [Wordpress Container](./module1/wordpress.md)
+
+# Week3 Deep understand Dockerfile
+- [python project](./module1/python_project.md)
+- [Express.js project](./module1/expressjs.md)
+- [Why Docker Compose](./module1/why_compose.md)
