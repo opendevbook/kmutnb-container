@@ -1,6 +1,6 @@
 # Why Docker Compose
 
-
+![](../assets/images/week3_listfile.png)
 - Structure Folder
 ```
 cd 
@@ -16,67 +16,74 @@ npm init
 - Create project
     - create file server.js
 ```
-cat <<EOF | tee server.js
-let express = require('express');
-var cors=require("cors");
-let path = require('path');
-let fs = require('fs');
-let MongoClient = require('mongodb').MongoClient;
-let bodyParser = require('body-parser');
-let app = express();
+vim server.js
+```
+```
+const express = require('express');
+const cors = require('cors');
+const { MongoClient } = require('mongodb');
+const bodyParser = require('body-parser');
+const app = express();
+
+const mongoClientOptions = { useNewUrlParser: true, useUnifiedTopology: true };
+const databaseName = 'my-db';
+const port = 3000;
+
 app.use(cors());
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-let mongoClientOptions = { useNewUrlParser: true, useUnifiedTopology: true };
-let databaseName = "my-db";
 
+app.post('/add-user', async (req, res) => {
+  const userObj = req.body;
+  const dbUrl = process.env.DB_URL;
 
-app.post('/add-user', function (req, res) {
-  let userObj = req.body;
+  try {
+    const client = await MongoClient.connect(dbUrl, mongoClientOptions);
+    const db = client.db(databaseName);
 
-  MongoClient.connect(process.env.DB_URL, mongoClientOptions, function (err, client) {
-    if (err) throw err;
+    // Define the newvalues object with $set operator
+    const newvalues = { $set: userObj };
 
-    let db = client.db(databaseName);
-    userObj['userName'] = req.body.userName;
+    // Update or insert the document
+    const result = await db.collection('users').updateOne(
+      { userName: userObj.userName }, // Query to find the document
+      newvalues, // Update the document
+      { upsert: true } // Create the document if it does not exist
+    );
 
-    let myquery = { userName: req.body.userName };
-    let newvalues = { $set: userObj };
+    client.close();
 
-    db.collection("users").updateOne(myquery, newvalues, {upsert: true}, function(err, res) {
-      if (err) throw err;
-      client.close();
-    });
-
-  });
-
-  res.send(userObj);
+    // Send success response
+    res.status(200).json({ message: 'User updated or added successfully', result });
+  } catch (err) {
+    console.error('Error updating user:', err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
-app.get('/get-user', function (req, res) {
-  let response = {};
+app.get('/get-user', async (req, res) => {
+  const query = req.query;
+  const dbUrl = process.env.DB_URL;
 
-  MongoClient.connect(process.env.DB_URL, mongoClientOptions, function (err, client) {
-    if (err) throw err;
+  try {
+    const client = await MongoClient.connect(dbUrl, mongoClientOptions);
+    const db = client.db(databaseName);
 
-    let db = client.db(databaseName);
+    const result = await db.collection('users').findOne(query);
+    client.close();
 
-    db.collection("users").findOne(req.query, function (err, result) {
-      if (err) throw err;
-      response = result;
-      client.close();
-
-      res.send(response ? response : {});
-    });
-  });
+    // Send user data or empty object
+    res.status(200).json(result || {});
+  } catch (err) {
+    console.error('Error fetching user:', err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
-app.listen(3000, function () {
-  console.log("app listening on port 3000!");
+app.listen(port, () => {
+  console.log(`App listening on port ${port}!`);
 });
-EOF
+
 ```
 
 ## Install the Required Packages
@@ -88,7 +95,7 @@ Next, you'll need to install the required npm packages. Based on your server.js 
 - body-parser: Middleware for parsing request bodies.
 
 ```
-$ npm install express cores mongodb body-parser
+$ npm install express cors mongodb body-parser
 ```
 
 - Create Dockerfile
@@ -230,15 +237,84 @@ EOF
 
 - Build the Docker image
 ```
-docker-compose build
+whycompose]$ docker compose build --no-cache
 ```
-
+![](../assets/images/week3_docker_compose2.png)
 - Check docker image
 ```
-docker image
+whycompose]$ docker images
+REPOSITORY                  TAG         IMAGE ID       CREATED         SIZE
+whycompose-api              latest      4ca5397ec637   2 minutes ago   181MB
 ```
 
 - Docker compose up
 ```
-docker compose up
+whycompose]$ docker compose up
 ```
+
+# Summary docker command
+
+When using Docker Compose and you want to force a rebuild of your services, even if Docker thinks the current images are up-to-date, you can use several options. These methods ensure that Docker Compose does not use cached layers and rebuilds everything from scratch.
+
+**1. Use the --no-cache Option**  
+The --no-cache flag can be used with docker-compose build to force Docker to rebuild the images without using cache:
+
+```
+docker-compose build --no-cache
+```
+- **--no-cache:** Ignores the cache and builds each step of the Dockerfile from scratch.
+
+**2. Use the --build Flag with docker-compose up**  
+You can also force a rebuild by using the --build flag when running docker-compose up. This will rebuild the images before starting the containers:
+
+```
+docker-compose up --build
+```
+- **--build:** Forces the build of images before starting the containers.
+
+**3. Remove Existing Images**
+If you want to ensure that old images are not used, you can manually remove them before rebuilding. You can list and remove the images using the following commands:
+
+```
+# List images
+docker images
+# Remove an image
+docker rmi <image_id>
+```
+
+Alternatively, you can use Docker Compose to remove images related to your project:
+
+```
+docker-compose down --rmi all
+```
+
+- **--rmi all:** Removes all images used by the services defined in the docker-compose.yml file.
+
+4. Clean Up Build Cache
+To clean up build cache that might interfere with forcing a rebuild, you can use the following command:
+
+```
+docker builder prune
+```
+- **docker builder prune:** Cleans up the build cache. You can add -a to remove all unused build cache, not just dangling cache.
+
+5. Rebuild with docker-compose and --pull
+If you also want to make sure you pull the latest versions of the base images, you can use --pull:
+
+```
+docker-compose build --pull --no-cache
+```
+
+- **--pull:** Always attempt to pull a newer version of the base image.
+- **--no-cache:** Ignores the cache and builds from scratch.
+
+## Summary
+To force a rebuild of your Docker Compose services:
+
+1. Ignore Cache: Use docker-compose build --no-cache.
+2. Rebuild and Start: Use docker-compose up --build.
+3. Remove Images: Use docker-compose down --rmi all or manually remove images.
+4. Clean Build Cache: Use docker builder prune.
+5. Pull Latest Images: Use docker-compose build --pull --no-cache.
+
+These options give you flexibility depending on whether you want to rebuild from scratch, update base images, or clean up old images and cache.
