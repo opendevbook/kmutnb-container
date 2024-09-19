@@ -29,3 +29,4 @@
 
 # Week4 Minikube (kubenetes cluster )
 - [install minikube](./module1/minikube.md)
+- [Workshop1 kubernetes](./module1/workshop1.md)
