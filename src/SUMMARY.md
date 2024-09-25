@@ -31,3 +31,6 @@
 - [install minikube](./module1/minikube.md)
 - [Workshop1 kubernetes](./module1/workshop1.md)
 - [workshop2 deployengine](./module1/nginxdeploy_cli.md)
+
+# Week5 install k8s cluster
+- [install kubernetest](./module1/install_k8s.md)
