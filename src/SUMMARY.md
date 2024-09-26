@@ -35,3 +35,4 @@
 # Week5 install k8s cluster
 - [install kubernetest](./module1/install_k8s.md)
 - [Workshop1 Deploy kubernetes](./module1/workshop2.md)
+- [Workshop2 Nginx+NodePort](./module1/workshop3.md)
