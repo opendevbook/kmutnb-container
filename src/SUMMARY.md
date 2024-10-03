@@ -36,3 +36,6 @@
 - [install kubernetest](./module1/install_k8s.md)
 - [Workshop1 Deploy kubernetes](./module1/workshop2.md)
 - [Workshop2 Nginx+NodePort](./module1/workshop3.md)
+
+# Week6 Pod deployment in Podman
+- [Podman & Pod deployment](./module1/podman_pod_deploy.md)
