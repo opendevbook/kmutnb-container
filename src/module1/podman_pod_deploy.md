@@ -141,7 +141,7 @@ POD ID        NAME        STATUS      CREATED         INFRA ID      # OF CONTAIN
 ```
 This creates a pod named mypod with a port forward from 8080 on the host to 80 in the pod.
 
-![](../assets/images/infra_container.png)
+![](../assets/images/podman-pod-architecture.png)
 
 ```admonish info
 In Podman (as well as Kubernetes), the first container in a pod is called the infra container (sometimes referred to as the "pause container"). This container plays a crucial role in maintaining the shared namespaces for the pod, even though it doesn't run any significant application workload itself.
