@@ -40,3 +40,4 @@
 # Week6 Pod deployment in Podman
 - [Podman & Pod deployment](./module1/podman_pod_deploy.md)
 - [Postgresql & Pod deployment](./module1/podmod_postgresql.md)
+- [Wordpress & Pod deployment](./module1/wordpress_mariadb.md)
