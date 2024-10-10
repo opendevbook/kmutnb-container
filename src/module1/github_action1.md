@@ -193,6 +193,9 @@ uvicorn main:app --reload
 ![](../assets/images/ghaction_create_api_python2.png)
 
 #### Test Fast Api with postman
+[https://www.postman.com/](https://www.postman.com/)
+![](../assets/images/postman.png)
+
 - **test1 GET /**
 ![](../assets/images/ghaction_create_postman1.png)
 
