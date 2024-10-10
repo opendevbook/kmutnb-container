@@ -44,5 +44,5 @@
 
 # Week7 Build and Push Docker image with Github Action
 - [workshop 1 api, front pipline](./module1/github_action1.md)
-- [workshop 2](./module1/github_action2.md)
-- [workshop 3](./module1/github_action3.md)
+- [workshop 2 mkdocs on github page](./module1/github_action2.md)
+- [workshop 3 Water Level OpenCV](./module1/github_action3.md)
