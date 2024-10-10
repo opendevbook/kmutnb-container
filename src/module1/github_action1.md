@@ -172,16 +172,17 @@ python -m venv venv
 - Activate virtual environment
     - On windows
     ```
-    venv\Script\activate
+    venv\Scripts\activate
     ```
     - On mac or linux
     ```
     source venv/bin/activate
     ```
 
-```
-pip install fastapi uvicorn
-```
+- install python package with pip command
+  ```
+  pip install fastapi uvicorn
+  ```
 
 ![](../assets/images/ghaction_create_api_python.png)
 
