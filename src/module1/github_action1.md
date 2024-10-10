@@ -334,10 +334,16 @@ docker run -p 80:80 test-react-app
 
 ## Step5 Git push to github
 
-- Create .gitignore in /api  to ignore folder venv
+- Befor we push to git. we have to  create file name  ```.gitignore```  in /api  to ignore folder venv
+```
+touch api/.gitignore
+```
+- add name of python in file
 ```
 venv
 ```
+![](../assets/images/gitignore.png)
+
 
 ```
 git add .
