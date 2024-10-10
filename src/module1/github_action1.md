@@ -238,7 +238,7 @@ pip freeze > requirements.txt
 #### Step 2: Run the Docker Container
 2.1 Once the image is built, you need to run it:
    ```bash
-   docker build -t fastapi-app .
+   docker run -p 8000:80 fastapi_app 
    ```
    - -d runs the container in detached mode.
    - -p 8000:8000 exposes port 8000 of the container to port 8000 of your local machine, so you can access your FastAPI app through http://localhost:8000.
