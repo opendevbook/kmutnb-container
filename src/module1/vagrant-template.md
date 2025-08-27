@@ -32,9 +32,8 @@ Vagrant.configure("2") do |config|
 end
 ```
 
-```
 
-- Ubuntu2310
+- We can change template to use box  ``generic/ubuntu2310`` , below:
 ```
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
@@ -62,3 +61,4 @@ Vagrant.configure("2") do |config|
   SHELL
 end
 ```
+
